@@ -1,0 +1,70 @@
+name: Build & Publish Extension
+
+# Standard release pipeline for this workspace's Blender add-ons.
+# Push a semver tag (vX.Y.Z) to build the extension zip and publish a
+# GitHub Release with it attached.
+#
+# Assumes one add-on per repo, with the package directory named the same
+# as the repo itself (see ../../AGENTS.md, section 2). scripts/*.py locate
+# that directory by finding blender_manifest.toml, so nothing here or in
+# scripts/ needs editing per project — only env.BLENDER_VERSION below, and
+# only when you want to bump the Blender build used to package releases.
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  # Bump this when a newer stable Blender release is available:
+  # https://download.blender.org/release/
+  BLENDER_VERSION: "5.1.1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Install Blender
+        run: |
+          # Install dependencies required by Blender binaries, if needed:
+          # sudo apt update && sudo apt install -y wget tar xz-utils libxrender1 libxi6 libgconf-2-4 libgl1
+
+          blender_minor="${BLENDER_VERSION%.*}"
+          wget "https://download.blender.org/release/Blender${blender_minor}/blender-${BLENDER_VERSION}-linux-x64.tar.xz"
+          tar -xf "blender-${BLENDER_VERSION}-linux-x64.tar.xz"
+          sudo mv "blender-${BLENDER_VERSION}-linux-x64" /opt/blender
+          sudo ln -s /opt/blender/blender /usr/local/bin/blender
+          blender --version
+
+      - name: Bump version
+        run: |
+          python3 scripts/bump_version.py "${GITHUB_REF_NAME}"
+
+      - name: Strip development-only code blocks
+        run: |
+          python3 scripts/strip_dev_blocks.py
+
+      - name: Build extension
+        run: |
+          mkdir -p dist
+          blender --command extension build \
+            --source-dir "${{ github.event.repository.name }}" \
+            --output-dir dist
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+
+      - name: Upload extension zip to release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: dist/*.zip

@@ -1,0 +1,17 @@
+schema_version = "1.0.0"
+
+id = "shape_keys_ntab"
+version = "0.1.0"
+name = "Shape Keys (N-Panel)"
+tagline = "Shape Keys panel, live in the 3D Viewport sidebar"
+maintainer = "Jess G"
+type = "add-on"
+
+blender_version_min = "5.1.0"
+
+license = ["SPDX:GPL-2.0-or-later"]
+category = "Interface"
+tags = ["Mesh", "Animation"]
+
+[permissions]
+# No network, file-system, or clipboard access required.

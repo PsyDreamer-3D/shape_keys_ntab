@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+*.zip
+*.tar.gz
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Testing / coverage
+.coverage
+.coverage.*
+.pytest_cache/
+htmlcov/
+
+# Type checkers / lint caches
+.mypy_cache/
+.ruff_cache/
+
+# Logs
+*.log
+
+# Local config / secrets
+.env
+.env.*
+secrets.json
+local_settings.py
+
+# Blender backups, caches, and locks
+*.blend1
+*.blend2
+*.blend@
+*.blendcache
+*.blend1.gz
+*.blend2.gz
