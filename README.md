@@ -8,6 +8,8 @@ Puts Blender's Shape Keys panel in the 3D Viewport sidebar (N-panel), under its 
 
 ## Installation
 
+To get updates inside Blender, add `https://github.com/PsyDreamer-3D/shape_keys_ntab/releases/latest/download/index.json` as a remote repository (**Preferences → Get Extensions → Repositories → + → Add Remote Repository**) and turn on **Check for Updates on Startup**. Releases carry the `index.json` that URL points at, so each new version shows up as an update.
+
 1. In Blender, open **Edit → Preferences → Get Extensions**.
 2. Click the dropdown → **Install from Disk** and select the built `shape_keys_ntab` zip (or point it at the `shape_keys_ntab/` folder for a dev install).
 3. Enable **Shape Keys (N-Panel)** in the extensions list.
